@@ -74,5 +74,5 @@ This project was developed by Petr Ermolinskiy.
 ## Cite
 If you use this project in your research, please cite it as follows:
 ```
-Ermolinskiy, Petr. "Sphere in the Optical Trap: Geometrical Optics." GitHub Repository, 2023. https://github.com/Petr-Ermolinskiy/Sphere_Geom_Optics_Trap.
+Ermolinskiy, Petr. "Sphere in the Optical Trap: Geometrical Optics." GitHub Repository, 2023. https://github.com/Petr-Ermolinskiy/Sphere_Geom_Optics_Trap
 ```
