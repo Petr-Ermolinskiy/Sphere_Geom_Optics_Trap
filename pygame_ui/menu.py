@@ -56,7 +56,7 @@ class Menu:
             y=300,
             width=300,
             height=50,
-            text="Force/Torque Calculation",
+            text="Force Calculation",
             fontSize=20,
             margin=20,
             inactiveColour=GREY,
