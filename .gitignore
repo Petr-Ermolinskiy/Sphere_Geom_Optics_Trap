@@ -1,5 +1,7 @@
 /temp/
 /files/
+/build/
+/dist/
 *.pyc
 *.json
 *.DS_Store

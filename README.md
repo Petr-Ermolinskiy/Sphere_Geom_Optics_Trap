@@ -61,6 +61,13 @@ To use this project, follow these steps:
     python main.py
     ```
 
+## Make an executable app
+
+You can create an executable app using pyinstaller:
+```bash
+pyinstaller --onefile --windowed --add-data=logo.png:. --name='GO_sphere_in_OT' main.py
+```
+
 ## Author 
 This project was developed by Petr Ermolinskiy.
 

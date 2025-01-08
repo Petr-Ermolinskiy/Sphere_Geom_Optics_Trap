@@ -1,3 +1,4 @@
+import os
 import pygame
 from pygame_ui.menu import Menu
 
@@ -9,7 +10,7 @@ def main():
     pygame.display.set_caption("Sphere in the Optical Trap: Geometrical Optics")
     
     # set the icon logo
-    icon = pygame.image.load("logo.png")
+    icon = pygame.image.load(os.path.join(os.getcwd(), "logo.png"))
     pygame.display.set_icon(icon)
 
     # Create and run the menu
@@ -18,5 +19,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
