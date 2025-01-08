@@ -65,7 +65,7 @@ To use this project, follow these steps:
 
 You can create an executable app using pyinstaller:
 ```bash
-pyinstaller --onefile --windowed --add-data=logo.png:. --name='GO_sphere_in_OT' main.py
+pyinstaller --windowed --add-data=logo.png:. --name='GO_sphere_in_OT' main.py
 ```
 
 ## Author 
