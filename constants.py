@@ -1,6 +1,7 @@
 # physical constants
 BOLTZMANN_CONSTANT = 1.38e-23  # Boltzmann constant (J/K)
 SPEED_OF_LIGHT = 3e8  # Speed of light (m/s)
+LAMBDA = 1064e-9  # Wavelength of the laser (m)
 
 # screen
 WIDTH, HEIGHT = 800, 600

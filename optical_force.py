@@ -1,9 +1,9 @@
 import numpy as np
 
-from constants import SPEED_OF_LIGHT
+from constants import SPEED_OF_LIGHT, LAMBDA
 
 # Discretize the laser beam into rays
-def generate_rays(num_rays, w0, P, beam_focus=np.array([0, 0, 0]), lambda_=1064e-9):
+def generate_rays(num_rays, w0, P, beam_focus=np.array([0, 0, 0]), lambda_=LAMBDA):
     # Divergence angle of the Gaussian beam
     theta = lambda_ / (np.pi * w0)  # Divergence angle (radians)
     
@@ -59,7 +59,7 @@ def momentum_transfer(ray_direction, intersection_point, sphere_center, n_medium
 
 # Calculate scattering force and torque
 def calculate_force_and_torque(radius, num_rays, w0, P, n_medium, n_particle, sphere_position, 
-                               beam_focus=np.array([0, 0, 0]), lambda_=1064e-9):
+                               beam_focus=np.array([0, 0, 0]), lambda_=LAMBDA):
     x_beam, y_beam, z_beam, ray_directions, power_per_ray = generate_rays(num_rays, w0, P, beam_focus, lambda_)
     F_scattering = np.zeros(3)  # Scattering force vector
     torque = np.zeros(3)  # Torque vector
