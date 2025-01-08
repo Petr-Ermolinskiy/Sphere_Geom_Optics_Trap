@@ -1,3 +1,11 @@
+altgraph==0.17.4
+macholib==1.16.3
 numpy==2.2.1
+ordered-set==4.1.0
+packaging==24.2
 pygame==2.6.1
 pygame-widgets==1.1.5
+pyinstaller==6.11.1
+pyinstaller-hooks-contrib==2024.11
+setuptools==75.7.0
+tqdm==4.67.1
