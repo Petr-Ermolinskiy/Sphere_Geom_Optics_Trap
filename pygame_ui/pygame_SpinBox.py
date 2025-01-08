@@ -55,6 +55,10 @@ class SpinBox:
         # Value display
         self.value_surface = self.font.render(f"{round(self.value, self.round_to)}", True, BLACK)
         self.value_rect = self.value_surface.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
+        
+        # Input active state
+        self.active_input = False  # Tracks whether the spin box is in input mode
+        self.input_buffer = ""  # Stores the current input for the value
 
     def decrement(self):
         self.value = max(self.min_value, self.value - self.step)
@@ -65,17 +69,54 @@ class SpinBox:
         self.update_value_display()
 
     def update_value_display(self):
-        self.value_surface = self.font.render(f"{round(self.value, self.round_to)}", True, BLACK)
-        self.value_rect = self.value_surface.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
+        # Update the displayed value
+        if self.active_input:
+            # Show the input buffer while typing
+            self.value_surface = self.font.render(self.input_buffer, True, BLACK)
+        else:
+            # Show the current value
+            self.value_surface = self.font.render(f"{round(self.value, self.round_to)}", 
+                                                  True, 
+                                                  BLACK)
+        self.value_rect = self.value_surface.get_rect(center=(self.x + self.width // 2, 
+                                                              self.y + self.height // 2))
+        # self.value_surface = self.font.render(f"{round(self.value, self.round_to)}", True, BLACK)
+        # self.value_rect = self.value_surface.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
 
     def draw(self):
         self.decrement_button.draw()
         self.increment_button.draw()
         self.screen.blit(self.value_surface, self.value_rect)
 
-    def listen(self, events):
-        self.decrement_button.listen(events)
-        self.increment_button.listen(events)
+    def listen(self, events):        
+        for event in events: 
+            # Handle click on the value display
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.value_rect.collidepoint(event.pos):  # Check if the value text is clicked
+                    self.active_input = True  # Activate input mode
+                    self.input_buffer = str(self.value)  # Initialize the input buffer with the current value
 
+            # Handle keyboard input
+            if event.type == pygame.KEYDOWN and self.active_input:
+                if event.key == pygame.K_BACKSPACE:
+                    self.input_buffer = self.input_buffer[:-1]  # Remove last character
+                elif event.key == pygame.K_RETURN:
+                    # Apply the input buffer to the value
+                    if self.input_buffer:
+                        try:
+                            new_value = float(self.input_buffer)
+                            if self.min_value <= new_value <= self.max_value:
+                                self.value = new_value
+                        except ValueError:
+                            pass  # Ignore invalid input
+                    self.active_input = False  # Deactivate input mode
+                else:
+                    # Append the typed character to the input buffer
+                    if event.unicode.isdigit() or event.unicode == '.' or event.unicode == '-':
+                        self.input_buffer += event.unicode
+
+                # Update the display while typing
+                self.update_value_display()
+    
     def getValue(self):
         return self.value

@@ -240,22 +240,31 @@ class CalculationWindow:
             # Draw the spin boxes and their labels
             self.screen.blit(self.beam_waist_label, (self.SPIN_BOX_X, 20))
             self.beam_waist_spin_box.draw()
+            self.beam_waist_spin_box.listen(events)
             self.screen.blit(self.laser_power_label, (self.SPIN_BOX_X, 80))
             self.laser_power_spin_box.draw()
+            self.laser_power_spin_box.listen(events)
             self.screen.blit(self.n_particle_label, (self.SPIN_BOX_X, 140))
             self.n_particle_spin_box.draw()
+            self.n_particle_spin_box.listen(events)
             self.screen.blit(self.n_medium_label, (self.SPIN_BOX_X, 200))
             self.n_medium_spin_box.draw()
+            self.n_medium_spin_box.listen(events)
             self.screen.blit(self.dt_label, (self.SPIN_BOX_X, 260))
             self.dt_spin_box.draw()
+            self.dt_spin_box.listen(events)
             self.screen.blit(self.viscosity_label, (self.SPIN_BOX_X, 320))
             self.viscosity_spin_box.draw()
+            self.viscosity_spin_box.listen(events)
             self.screen.blit(self.temperature_label, (self.SPIN_BOX_X, 380))
             self.temperature_spin_box.draw()
+            self.temperature_spin_box.listen(events)
             self.screen.blit(self.radius_label, (self.SPIN_BOX_X, 440))
             self.radius_spin_box.draw()
+            self.radius_spin_box.listen(events)
             self.screen.blit(self.num_rays_label, (self.SPIN_BOX_X, 500))
             self.num_rays_spin_box.draw()
+            self.num_rays_spin_box.listen(events)
 
             # Draw the path to save input
             self.screen.blit(self.path_label, (self.RIGHT_SIDE_X, HEIGHT - 400))
@@ -319,6 +328,7 @@ class CalculationWindow:
         dict_parameters['min_point'] = self.min_point_spin_box.getValue()
         dict_parameters['max_point'] = self.max_point_spin_box.getValue()
         
+        print(dict_parameters)
         # call the function to calculate and save the results
         calc_and_save(dict_parameters)
 
