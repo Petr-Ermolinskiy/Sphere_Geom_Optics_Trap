@@ -5,7 +5,7 @@ from pygame_widgets.button import Button
 from pygame_widgets.dropdown import Dropdown
 
 from .objects import Sphere, Cones
-from constants import HEIGHT, WIDTH, BLACK, WHITE, GREY, BLUE
+from constants import HEIGHT, WIDTH, BLACK, WHITE, GREY, BLUE, ANOTHERBLUE
 
 
 class Simulation:
@@ -13,37 +13,55 @@ class Simulation:
         # pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("3D Brownian Motion Simulation")
-        self.font = pygame.font.SysFont("Arial", 20)
+        self.font = pygame.font.SysFont("Arial", 18)
         self.clock = pygame.time.Clock()
 
         # Input active
         self.active_input = None  # Tracks which coordinate is being edited (0: x, 1: y, 2: z)
         self.input_buffer = ""  # Stores the current input for the active coordinate
 
-        # Sliders with labels (shifted 25 pixels higher)
-        self.dt_slider = Slider(self.screen, 50, HEIGHT - 275, 200, 20, min=0.01, max=1, step=0.01, initial=0.01)
+        # Sliders with labels
+        self.dt_slider = Slider(self.screen, 50, HEIGHT - 275, 200, 20, min=0.01, max=0.5, step=0.01, initial=0.01)
         self.viscosity_slider = Slider(self.screen, 50, HEIGHT - 225, 200, 20, min=1, max=10, step=0.1, initial=1)
         self.temperature_slider = Slider(self.screen, 50, HEIGHT - 175, 200, 20, min=100, max=500, step=1, initial=300)
         self.radius_slider = Slider(self.screen, 50, HEIGHT - 125, 200, 20, min=1, max=100, step=1, initial=10)
         self.n_medium_slider = Slider(self.screen, 50, HEIGHT - 325, 200, 20, min=1.0, max=2.0, step=0.01, initial=1.33)
         self.n_particle_slider = Slider(self.screen, 50, HEIGHT - 375, 200, 20, min=1.0, max=2.0, step=0.01, initial=1.59)
-        self.laser_power_slider = Slider(self.screen, 50, HEIGHT - 425, 200, 20, min=1, max=40, step=0.1, initial=1)
+        self.laser_power_slider = Slider(self.screen, 50, HEIGHT - 425, 200, 20, min=1, max=100, step=1, initial=10)
         self.beam_waist_slider = Slider(self.screen, 50, HEIGHT - 475, 200, 20, min=0.5, max=10, step=0.1, initial=0.5)
         self.number_of_rays_slider = Slider(self.screen, 50, HEIGHT - 75, 200, 20, min=500, max=10000, step=100, initial=1000)
 
         # Buttons
         self.zoom_in_button = Button(self.screen, WIDTH - 150, 50, 40, 40, text="+", fontSize=20)
         self.zoom_out_button = Button(self.screen, WIDTH - 100, 50, 40, 40, text="-", fontSize=20)
-        self.restart_button = Button(self.screen, WIDTH - 150, 100, 100, 40, text="Restart", fontSize=20)
-        self.stop_button = Button(self.screen, WIDTH - 150, 150, 100, 40, text="Stop/Start", fontSize=20)
+        self.restart_button = Button(self.screen, WIDTH - 150, 100, 100, 40, text="Restart", fontSize=20,
+                                      textColour=BLACK,
+                                      inactiveColour=GREY,  
+                                      hoverColour=GREY)
+        self.stop_button = Button(self.screen, WIDTH - 150, 150, 100, 40, text="Stop/Start", fontSize=20,
+                                      textColour=BLACK,
+                                      inactiveColour=GREY,  
+                                      hoverColour=GREY)
         self.exit_button = Button(self.screen, WIDTH - 150, 200, 100, 40, text="Exit", fontSize=20)
 
         # Dropdowns
-        self.mode_dropdown = Dropdown(self.screen, WIDTH - 150, 250, 100, 30, name="View",
-                                      choices=["xy", "xz", "yz"], values=["xy", "xz", "yz"], fontSize=20)
-        self.force_dropdown = Dropdown(self.screen, 10, 10, 300, 30, name="Force Mode",
+        self.mode_dropdown = Dropdown(self.screen, WIDTH - 150, 250, 100, 30, 
+                                      name="View",
+                                      choices=["xy", "xz", "yz"], 
+                                      values=["xy", "xz", "yz"], 
+                                      fontSize=30,
+                                      textColour=BLACK,
+                                      inactiveColour=GREY,  
+                                      hoverColour=GREY)
+        
+        self.force_dropdown = Dropdown(self.screen, 10, 10, WIDTH, 30, 
+                                       name="Force Mode",
                                        choices=["Laser Trapping Force", "No Force", "Central Force"],
-                                       values=["Laser Trapping Force", "No Force", "Central Force"], fontSize=30)
+                                       values=["Laser Trapping Force", "No Force", "Central Force"], 
+                                       fontSize=30,
+                                       textColour=WHITE,
+                                       inactiveColour=BLACK,  
+                                       hoverColour=ANOTHERBLUE)
 
         # Sphere and Cones
         self.sphere = Sphere(self.radius_slider.getValue())
@@ -54,8 +72,8 @@ class Simulation:
         self.simulation_active = True
         self.scale = 1.0
         
-        # return!!!!!!!!
-        self.return_to_menu_callback = return_to_menu_callback  # Callback to return to the menu
+        # Callback to return to the menu
+        self.return_to_menu_callback = return_to_menu_callback
 
     def handle_events(self):
         events = pygame.event.get()
@@ -117,14 +135,12 @@ class Simulation:
             self.simulation_active = not self.simulation_active
             self.stop_button.clicked = not self.stop_button.clicked
 
-        
         if self.exit_button.clicked:
             self.running = False
             self.return_to_menu_callback()  # Return to the menu
 
         # Update sliders
         self.sphere.radius = self.radius_slider.getValue()
-
         # Update widgets
         pygame_widgets.update(events)
 
@@ -172,12 +188,12 @@ class Simulation:
     def draw_slider_labels(self):
         # Draw labels above sliders with values in parentheses
         labels = [
-            ("dt (s)", self.dt_slider),
+            ("dt (sec.)", self.dt_slider),
             ("Viscosity (mPa·s)", self.viscosity_slider),
             ("Temperature (K)", self.temperature_slider),
             ("Radius (µm)", self.radius_slider),
-            ("n_medium", self.n_medium_slider),
-            ("n_particle", self.n_particle_slider),
+            ("Refractive Index (Medium)", self.n_medium_slider),
+            ("Refractive Index (Particle)", self.n_particle_slider),
             ("Laser Power (mW)", self.laser_power_slider),
             ("Beam Waist (µm)", self.beam_waist_slider),
             ("Number of Rays", self.number_of_rays_slider),
@@ -216,7 +232,7 @@ class Simulation:
 
             self.draw_scale_bar()
             self.draw_position_window()
-            self.draw_slider_labels()  # Draw slider labels with values
+            self.draw_slider_labels() 
 
             end = int(1000 * (time.time() - start))
             delta_time = int(self.dt_slider.getValue() * 1000) - end
@@ -228,6 +244,6 @@ class Simulation:
 
             pygame.display.flip()
             pygame.time.delay(delta_time)
-            # self.clock.tick(int(self.dt_slider.getValue() * 1000))
+            # Also, the following can be used as well: self.clock.tick(int(self.dt_slider.getValue() * 1000))
 
         pygame.quit()

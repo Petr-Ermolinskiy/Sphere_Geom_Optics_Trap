@@ -5,7 +5,7 @@ import pygame
 from constants import WHITE, BLACK, GREY, BLUE
 
 class SpinBox:
-    def __init__(self, screen, x, y, width, height, min_value, max_value, step, initial_value, font_size=20):
+    def __init__(self, screen, x, y, width, height, min_value, max_value, step, initial_value, font_size=22, round_to=2):
         self.screen = screen
         self.x = x
         self.y = y
@@ -16,6 +16,7 @@ class SpinBox:
         self.step = step
         self.value = initial_value
         self.font = pygame.font.SysFont("Arial", font_size)
+        self.round_to = round_to
 
         # Decrement button
         self.decrement_button = Button(
@@ -52,7 +53,7 @@ class SpinBox:
         )
 
         # Value display
-        self.value_surface = self.font.render(f"{self.value:.2f}", True, BLACK)
+        self.value_surface = self.font.render(f"{round(self.value, self.round_to)}", True, BLACK)
         self.value_rect = self.value_surface.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
 
     def decrement(self):
@@ -64,17 +65,12 @@ class SpinBox:
         self.update_value_display()
 
     def update_value_display(self):
-        self.value_surface = self.font.render(f"{self.value:.2f}", True, BLACK)
+        self.value_surface = self.font.render(f"{round(self.value, self.round_to)}", True, BLACK)
         self.value_rect = self.value_surface.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
 
     def draw(self):
-        # Draw the decrement button
         self.decrement_button.draw()
-
-        # Draw the increment button
         self.increment_button.draw()
-
-        # Draw the value display
         self.screen.blit(self.value_surface, self.value_rect)
 
     def listen(self, events):

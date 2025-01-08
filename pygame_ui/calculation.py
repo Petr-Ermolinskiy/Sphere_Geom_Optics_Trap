@@ -9,76 +9,75 @@ from .pygame_SpinBox import SpinBox
 from constants import WHITE, WIDTH, HEIGHT, BLACK, GREY, BLUE
 
 class CalculationWindow:
-    # Class variables for X positions
-    SPIN_BOX_X = 150  # X position for spin boxes
-    RIGHT_SIDE_X = WIDTH - 350  # X position for elements on the right side
+    # All spin boxes are placed at the same X position
+    SPIN_BOX_X = 150
+    RIGHT_SIDE_X = WIDTH - 350
 
     def __init__(self, return_to_menu_callback):
-        # Initialize a new Pygame display (new window)
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Initialize the screen first
-        pygame.display.set_caption("Force calculation")  # Updated window title
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("Force calculation")
         self.font = pygame.font.SysFont("Arial", 20)
         self.clock = pygame.time.Clock()
         self.running = True
         self.return_to_menu_callback = return_to_menu_callback  # Callback to return to the menu
 
         # Slider font
-        self.slider_font = pygame.font.SysFont("Arial", 16)  # Font for labels
+        self.slider_font = pygame.font.SysFont("Arial", 20)
 
-        # Initialize the dropdown (view toggle list) in the top-right corner
         self.dropdown = Dropdown(
-            self.screen,  # Surface to draw on
-            x=self.RIGHT_SIDE_X,  # X position (top-right corner)
-            y=50,  # Y position
-            width=200,  # Width of the dropdown
-            height=30,  # Height of the dropdown
-            name="Select axis",  # Name of the dropdown
-            choices=["X", "Y", "Z"],  # Choices for the dropdown
-            values=["X", "Y", "Z"],  # Values corresponding to choices
-            fontSize=30,  # Font size
-            textColour=BLACK,  # Text color
-            inactiveColour=GREY,  # Background color when inactive
-            hoverColour=GREY  # Background color when hovered
+            self.screen,
+            x=self.RIGHT_SIDE_X,
+            y=50, 
+            width=200, 
+            height=30, 
+            name="Select axis",  
+            choices=["X", "Y", "Z"],  
+            values=["X", "Y", "Z"],  
+            fontSize=30,  
+            textColour=BLACK,  
+            inactiveColour=GREY,  
+            hoverColour=GREY  
         )
 
         # SpinBoxes (replacing sliders)
         self.beam_waist_spin_box = SpinBox(
-            self.screen,  # Surface to draw on
-            x=self.SPIN_BOX_X,  # X position
-            y=50,  # Y position (shifted up by 50 pixels)
-            width=150,  # Width of the spin box
-            height=30,  # Height of the spin box
-            min_value=0.1,  # Minimum value
-            max_value=10.0,  # Maximum value
-            step=0.1,  # Step size
-            initial_value=1.0  # Initial value
+            self.screen,  
+            x=self.SPIN_BOX_X,  
+            y=50,  
+            width=150,  
+            height=30,  
+            min_value=0.1,  
+            max_value=10.0,  
+            step=0.1,  
+            initial_value=1.0 
         )
         self.laser_power_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=110,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=110,  
             width=150,
             height=30,
-            min_value=0.1,
-            max_value=100.0,
-            step=0.1,
-            initial_value=10.0
+            min_value=1,
+            max_value=200,
+            step=1,
+            initial_value=10,
+            round_to=0
         )
         self.n_particle_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=170,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=170,  
             width=150,
             height=30,
-            min_value=1,
-            max_value=1000,
-            step=1,
-            initial_value=100
+            min_value=1.0,
+            max_value=2.0,
+            step=0.01,
+            initial_value=1.59
         )
         self.n_medium_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=230,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=230,  
             width=150,
             height=30,
             min_value=1.0,
@@ -89,7 +88,7 @@ class CalculationWindow:
         self.dt_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=290,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=290,  
             width=150,
             height=30,
             min_value=0.01,
@@ -100,7 +99,7 @@ class CalculationWindow:
         self.viscosity_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=350,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=350,  
             width=150,
             height=30,
             min_value=1,
@@ -111,7 +110,7 @@ class CalculationWindow:
         self.temperature_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=410,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=410,  
             width=150,
             height=30,
             min_value=100,
@@ -122,7 +121,7 @@ class CalculationWindow:
         self.radius_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=470,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=470,  
             width=150,
             height=30,
             min_value=1,
@@ -133,38 +132,39 @@ class CalculationWindow:
         self.num_rays_spin_box = SpinBox(
             self.screen,
             x=self.SPIN_BOX_X,
-            y=530,  # Increased vertical spacing (shifted up by 50 pixels)
+            y=530,  
             width=150,
             height=30,
-            min_value=1,
-            max_value=1000,
-            step=1,
-            initial_value=100
+            min_value=100,
+            max_value=10000,
+            step=100,
+            initial_value=1000,
+            round_to=0
         )
 
         # Labels for spin boxes
         self.beam_waist_label = self.slider_font.render("Beam Waist (µm)", True, BLACK)
         self.laser_power_label = self.slider_font.render("Laser Power (mW)", True, BLACK)
-        self.n_particle_label = self.slider_font.render("Number of Particles", True, BLACK)
+        self.n_particle_label = self.slider_font.render("Refractive Index (Particle)", True, BLACK)
         self.n_medium_label = self.slider_font.render("Refractive Index (Medium)", True, BLACK)
-        self.dt_label = self.slider_font.render("dt (s)", True, BLACK)
+        self.dt_label = self.slider_font.render("dt (sec.)", True, BLACK)
         self.viscosity_label = self.slider_font.render("Viscosity (mPa·s)", True, BLACK)
         self.temperature_label = self.slider_font.render("Temperature (K)", True, BLACK)
         self.radius_label = self.slider_font.render("Radius (µm)", True, BLACK)
         self.num_rays_label = self.slider_font.render("Number of Rays", True, BLACK)
 
-        # TextBox for path to save (only one text box remains)
+        # TextBox for path to save
         self.path_box = TextBox(
             self.screen,
-            x=self.RIGHT_SIDE_X,  # X position (right side)
-            y=HEIGHT - 370,  # Y position (100px above Min point spin box)
-            width=400,  # Width of the text box
-            height=30,  # Height of the text box
-            fontSize=20,  # Font size
-            borderThickness=1,  # Border thickness
-            radius=5,  # Border radius
-            textColour=BLACK,  # Text color
-            borderColour=GREY  # Border color
+            x=self.RIGHT_SIDE_X,  
+            y=HEIGHT - 370,  
+            width=300,  
+            height=30,  
+            fontSize=20,  
+            borderThickness=1, 
+            radius=5,  
+            textColour=BLACK,  
+            borderColour=GREY  
         )
         self.path_label = self.font.render("Path to save:", True, BLACK)
 
@@ -172,58 +172,58 @@ class CalculationWindow:
         self.min_point_label = self.slider_font.render("Min point, µm", True, BLACK)
         self.min_point_spin_box = SpinBox(
             self.screen,
-            x=self.RIGHT_SIDE_X,  # X position (right side)
-            y=HEIGHT - 270,  # Y position (100px below path_box)
-            width=200,  # Width of the spin box
-            height=30,  # Height of the spin box
-            min_value=-100,  # Minimum value
-            max_value=100,  # Maximum value
-            step=1,  # Step size
-            initial_value=-10  # Default value
+            x=self.RIGHT_SIDE_X, 
+            y=HEIGHT - 270,  
+            width=200,  
+            height=30,  
+            min_value=-100, 
+            max_value=100,  
+            step=1, 
+            initial_value=-10  
         )
         self.max_point_label = self.slider_font.render("Max point, µm", True, BLACK)
         self.max_point_spin_box = SpinBox(
             self.screen,
-            x=self.RIGHT_SIDE_X,  # X position (right side)
-            y=HEIGHT - 210,  # Y position (60px below Min point spin box)
-            width=200,  # Width of the spin box
-            height=30,  # Height of the spin box
-            min_value=-100,  # Minimum value
-            max_value=100,  # Maximum value
-            step=1,  # Step size
-            initial_value=10  # Default value
+            x=self.RIGHT_SIDE_X,  
+            y=HEIGHT - 210,  
+            width=200,  
+            height=30,  
+            min_value=-100,  
+            max_value=100,  
+            step=1, 
+            initial_value=10  
         )
 
-        # Calculate and save results button (placed just above the Exit button with 40px spacing)
+        # Calculate and save results button
         self.calculate_button = Button(
             self.screen,
-            x=self.RIGHT_SIDE_X,  # X position (right side)
-            y=HEIGHT - 110,  # Y position (40px above Exit button)
-            width=200,  # Width of the button
-            height=50,  # Height of the button
-            text="Calculate and Save",  # Button text
-            fontSize=20,  # Font size
-            margin=20,  # Margin between text and button edges
-            inactiveColour=GREY,  # Color when not hovered
-            hoverColour=BLUE,  # Color when hovered
-            pressedColour=WHITE,  # Color when clicked
-            radius=10  # Border radius
+            x=self.RIGHT_SIDE_X,  
+            y=HEIGHT - 110,  
+            width=200,  
+            height=50,  
+            text="Calculate and Save",  
+            fontSize=20,  
+            margin=20,  
+            inactiveColour=GREY,  
+            hoverColour=BLUE,  
+            pressedColour=WHITE,  
+            radius=10  
         )
 
         # Exit button (placed at the bottom-right)
         self.exit_button = Button(
-            self.screen,  # Surface to draw on
-            x=self.RIGHT_SIDE_X,  # X position (right side)
-            y=HEIGHT - 50,  # Y position
-            width=200,  # Width of the button
-            height=50,  # Height of the button
-            text="Exit",  # Button text
-            fontSize=20,  # Font size
-            margin=20,  # Margin between text and button edges
-            inactiveColour=GREY,  # Color when not hovered
-            hoverColour=BLUE,  # Color when hovered
-            pressedColour=WHITE,  # Color when clicked
-            radius=10  # Border radius
+            self.screen,  
+            x=self.RIGHT_SIDE_X,  
+            y=HEIGHT - 50,  
+            width=200,  
+            height=50,  
+            text="Exit",  
+            fontSize=20,  
+            margin=20,  
+            inactiveColour=GREY,  
+            hoverColour=BLUE,  
+            pressedColour=WHITE,  
+            radius=10  
         )
 
     def run(self):
@@ -311,17 +311,25 @@ class CalculationWindow:
         # Get the save path
         save_path = self.path_box.getText()
 
-        # Get "Min point, µm" and "Max point, µm" values
+        # Get "Min point, µm" and "Max point, µm" values for the selected view
         min_point = self.min_point_spin_box.getValue()
         max_point = self.max_point_spin_box.getValue()
-
-        # Perform calculations and save results (placeholder logic)
-        print(f"Selected View: {selected_view}")
-        print(f"Beam Waist: {beam_waist}, Laser Power: {laser_power}, Number of Particles: {n_particle}")
-        print(f"Refractive Index (Medium): {n_medium}, dt: {dt}, Viscosity: {viscosity}")
-        print(f"Temperature: {temperature}, Radius: {radius}, Number of Rays: {num_rays}")
-        print(f"Save Path: {save_path}")
-        print(f"Min Point: {min_point}, Max Point: {max_point}")
-
-        # Add your calculation and saving logic here
+        
+        dict_to_save = {}
+        dict_to_save['selected_view'] = selected_view
+        dict_to_save['beam_waist'] = beam_waist
+        dict_to_save['laser_power'] = laser_power
+        dict_to_save['n_particle'] = n_particle
+        dict_to_save['n_medium'] = n_medium
+        dict_to_save['dt'] = dt
+        dict_to_save['viscosity'] = viscosity
+        dict_to_save['temperature'] = temperature
+        dict_to_save['radius'] = radius
+        dict_to_save['num_rays'] = num_rays
+        dict_to_save['save_path'] = save_path
+        dict_to_save['min_point'] = min_point
+        dict_to_save['max_point'] = max_point
+        
+        for i in dict_to_save:
+            print(f"{i}: {dict_to_save[i]}")
 

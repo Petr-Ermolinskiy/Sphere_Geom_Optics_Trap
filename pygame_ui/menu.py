@@ -38,7 +38,7 @@ class Menu:
         # Buttons
         self.real_time_button = Button(
             self.screen,  # Surface to draw on
-            x=WIDTH // 2 - 100,  # X position
+            x=WIDTH // 2 - 150,  # X position
             y=200,  # Y position
             width=300,  # Width of the button
             height=50,  # Height of the button
@@ -52,7 +52,7 @@ class Menu:
         )
         self.force_torque_button = Button(
             self.screen,
-            x=WIDTH // 2 - 100,
+            x=WIDTH // 2 - 150,
             y=300,
             width=300,
             height=50,
@@ -66,7 +66,7 @@ class Menu:
         )
         self.exit_button = Button(
             self.screen,
-            x=WIDTH // 2 - 100,
+            x=WIDTH // 2 - 150,
             y=400,
             width=300,
             height=50,
@@ -143,13 +143,6 @@ class Menu:
         self.force_torque_button.clicked = False
 
         self.hide_all_except_selected()
-        """
-        pygame_widgets.WidgetHandler._widgets = [widget for widget in pygame_widgets.WidgetHandler._widgets 
-                                                 if isinstance(widget, Button) 
-                                                 and widget in [self.real_time_button, 
-                                                                self.force_torque_button, 
-                                                                self.exit_button]]
-        """
         # Restore the menu
         self.show_widgets()  # Show all widgets again
         self.run_menu()  # Restart the menu loop
@@ -190,4 +183,4 @@ class Menu:
 
             pygame.display.flip()
             pygame_widgets.update(events)  # Update pygame_widgets
-            self.clock.tick(1000)
+            self.clock.tick(500)
