@@ -6,6 +6,8 @@ from pygame_widgets.textbox import TextBox
 
 from .pygame_SpinBox import SpinBox
 
+from calc_force_and_save import calc_and_save
+
 from constants import WHITE, WIDTH, HEIGHT, BLACK, GREY, BLUE
 
 class CalculationWindow:
@@ -294,42 +296,29 @@ class CalculationWindow:
         pygame_widgets.update(events)  # Update pygame_widgets
 
     def calculate_and_save_results(self):
+        dict_parameters = {}
+        
         # Get the selected view
-        selected_view = self.dropdown.getSelected()
+        dict_parameters['selected_view'] = self.dropdown.getSelected()
 
         # Get spin box values
-        beam_waist = self.beam_waist_spin_box.getValue()
-        laser_power = self.laser_power_spin_box.getValue()
-        n_particle = self.n_particle_spin_box.getValue()
-        n_medium = self.n_medium_spin_box.getValue()
-        dt = self.dt_spin_box.getValue()
-        viscosity = self.viscosity_spin_box.getValue()
-        temperature = self.temperature_spin_box.getValue()
-        radius = self.radius_spin_box.getValue()
-        num_rays = self.num_rays_spin_box.getValue()
+        dict_parameters['w0'] = self.beam_waist_spin_box.getValue()
+        dict_parameters['P'] = self.laser_power_spin_box.getValue()
+        dict_parameters['n_particle'] = self.n_particle_spin_box.getValue()
+        dict_parameters['n_medium'] = self.n_medium_spin_box.getValue()
+        dict_parameters['dt'] = self.dt_spin_box.getValue()
+        dict_parameters['viscosity'] = self.viscosity_spin_box.getValue()
+        dict_parameters['temperature'] = self.temperature_spin_box.getValue()
+        dict_parameters['radius'] = self.radius_spin_box.getValue()
+        dict_parameters['num_rays'] = self.num_rays_spin_box.getValue()
 
         # Get the save path
-        save_path = self.path_box.getText()
+        dict_parameters['save_path'] = self.path_box.getText()
 
         # Get "Min point, µm" and "Max point, µm" values for the selected view
-        min_point = self.min_point_spin_box.getValue()
-        max_point = self.max_point_spin_box.getValue()
+        dict_parameters['min_point'] = self.min_point_spin_box.getValue()
+        dict_parameters['max_point'] = self.max_point_spin_box.getValue()
         
-        dict_to_save = {}
-        dict_to_save['selected_view'] = selected_view
-        dict_to_save['beam_waist'] = beam_waist
-        dict_to_save['laser_power'] = laser_power
-        dict_to_save['n_particle'] = n_particle
-        dict_to_save['n_medium'] = n_medium
-        dict_to_save['dt'] = dt
-        dict_to_save['viscosity'] = viscosity
-        dict_to_save['temperature'] = temperature
-        dict_to_save['radius'] = radius
-        dict_to_save['num_rays'] = num_rays
-        dict_to_save['save_path'] = save_path
-        dict_to_save['min_point'] = min_point
-        dict_to_save['max_point'] = max_point
-        
-        for i in dict_to_save:
-            print(f"{i}: {dict_to_save[i]}")
+        # call the function to calculate and save the results
+        calc_and_save(dict_parameters)
 
